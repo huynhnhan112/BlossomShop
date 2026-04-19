@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flower Shop</title>
+    <link
+      rel="icon"
+      href="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d"
+      type="image/jpg"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="logo">Blossom Shop</div>
+        <nav class="nav">
+          <!-- <button
+            type="button"
+            class="icon-nav"
+            data-modal-target="favorites-modal"
+            aria-label="Open favorites"
+          >
+            <span class="icon">❤️</span>
+          </button> -->
+          <button
+            type="button"
+            class="icon-nav"
+            data-modal-target="cart-modal"
+            aria-label="Open cart"
+          >
+            <img src="img/QR.jpg" alt="QR" class="img_qr" />
+          </button>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Hoa tươi cho cách bạn yêu thương</span>
+          <h1 class="hero-title">
+            Chọn bó hoa hoàn hảo để gửi yêu thương ngay hôm nay
+          </h1>
+          <p class="hero-text">
+            Mỗi bó hoa là một tác phẩm được tạo ra để tôn vinh những khoảnh khắc
+            bạn không muốn bỏ lỡ.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#shop">
+              Xem các mẫu hoa đẹp nhất
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-image" aria-hidden="true">
+          <img
+            src="img/background.jpg"
+            alt="Beautiful flower bouquet"
+            class="hero-bg"
+          />
+        </div>
+      </section>
+
+      <section class="flowers" id="shop">
+        <div class="section-heading">
+          <div>
+            <h2>Chọn bó hoa dành riêng cho người bạn yêu</h2>
+            <p>
+              Dù là buổi hẹn đầu, ngày kỷ niệm hay chỉ đơn giản là “mình quan
+              tâm”, luôn có một bó hoa dành riêng cho bạn
+            </p>
+          </div>
+        </div>
+
+        <div class="product-grid" id="collection"></div>
+      </section>
+    </div>
+
+    <div class="modal-overlay" id="favorites-modal" aria-hidden="true">
+      <div class="modal">
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Close favorites modal"
+        >
+          ×
+        </button>
+        <div id="favorites-content" class="favorites-content">
+          <p>
+            Chưa có bó hoa yêu thích nào. Nhấn vào tim để thêm bó hoa bạn thích
+            nhé.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="cart-modal" aria-hidden="true">
+      <div class="modal_qr">
+        <img src="img/QR.jpg" alt="QR" />
+      </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Back to top">
+      ↑
+    </button>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
