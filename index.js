@@ -44,6 +44,18 @@ function setupProductRevealAnimation() {
 
   const productCards = Array.from(productGrid.querySelectorAll(".product"));
   if (!productCards.length) return;
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+
+  if (isMobile) {
+    productCards.forEach((card) => {
+      card.classList.remove("is-pending-reveal", "is-revealed");
+      card.style.transitionDelay = "";
+      card.style.opacity = "1";
+      card.style.transform = "none";
+      card.style.filter = "none";
+    });
+    return;
+  }
 
   const templateColumns = getComputedStyle(productGrid).gridTemplateColumns;
   const columnCount = Math.max(1, templateColumns.split(" ").filter(Boolean).length);
