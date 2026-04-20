@@ -16,8 +16,8 @@ function createProductList(product) {
       <span class="price-badge">${product.price}</span>
       <button
         type="button"
-        class="heart-btn"
-        title="Add to favorites"
+        class="product-id-badge"
+        title="Product ID"
       >
         ${product.id}
       </button>
@@ -36,6 +36,67 @@ function renderProductList() {
     productCard.innerHTML = createProductList(product);
     productGrid.appendChild(productCard);
   });
+}
+
+function setupProductRevealAnimation() {
+  const productGrid = document.getElementById("collection");
+  if (!productGrid) return;
+
+  const productCards = Array.from(productGrid.querySelectorAll(".product"));
+  if (!productCards.length) return;
+
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  const templateColumns = getComputedStyle(productGrid).gridTemplateColumns;
+  const columnCount = isMobile
+    ? 1
+    : Math.max(1, templateColumns.split(" ").filter(Boolean).length);
+  const revealGroups = new Map();
+
+  productCards.forEach((card, index) => {
+    const groupIndex = isMobile ? index : Math.floor(index / columnCount);
+    card.dataset.revealGroup = String(groupIndex);
+    card.classList.add("is-pending-reveal");
+    const delayStep = isMobile ? index : groupIndex;
+    card.style.transitionDelay = `${80 + delayStep * 120}ms`;
+
+    const groupCards = revealGroups.get(groupIndex) || [];
+    groupCards.push(card);
+    revealGroups.set(groupIndex, groupCards);
+  });
+
+  const revealCard = (card) => {
+    card.classList.remove("is-pending-reveal");
+    card.classList.add("is-revealed");
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    productCards.forEach(revealCard);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        const groupIndex = Number(entry.target.dataset.revealGroup);
+        const cardsToReveal = isMobile
+          ? [entry.target]
+          : revealGroups.get(groupIndex) || [entry.target];
+
+        cardsToReveal.forEach((card) => {
+          revealCard(card);
+          observer.unobserve(card);
+        });
+      });
+    },
+    {
+      threshold: 0.18,
+      rootMargin: "0px 0px -12% 0px",
+    },
+  );
+
+  productCards.forEach((card) => observer.observe(card));
 }
 
 function showScrollTopButton() {
@@ -88,7 +149,7 @@ function setupProductPreview() {
   if (!productGrid || !previewModal || !previewImage) return;
 
   productGrid.addEventListener("click", (event) => {
-    if (event.target.closest(".heart-btn")) return;
+    if (event.target.closest(".product-id-badge")) return;
 
     const productCard = event.target.closest(".product");
     if (!productCard) return;
@@ -136,6 +197,7 @@ function modalToggleEvents() {
 
 function init() {
   renderProductList();
+  setupProductRevealAnimation();
   scrollToTop();
   setupProductPreview();
   modalToggleEvents();
