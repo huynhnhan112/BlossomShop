@@ -57,7 +57,7 @@ function setupProductRevealAnimation() {
     card.dataset.revealGroup = String(groupIndex);
     card.classList.add("is-pending-reveal");
     const delayStep = isMobile ? index : groupIndex;
-    card.style.transitionDelay = `${80 + delayStep * 120}ms`;
+    card.style.transitionDelay = `${50 + delayStep * 90}ms`;
 
     const groupCards = revealGroups.get(groupIndex) || [];
     groupCards.push(card);
