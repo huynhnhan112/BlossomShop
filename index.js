@@ -45,19 +45,15 @@ function setupProductRevealAnimation() {
   const productCards = Array.from(productGrid.querySelectorAll(".product"));
   if (!productCards.length) return;
 
-  const isMobile = window.matchMedia("(max-width: 760px)").matches;
   const templateColumns = getComputedStyle(productGrid).gridTemplateColumns;
-  const columnCount = isMobile
-    ? 1
-    : Math.max(1, templateColumns.split(" ").filter(Boolean).length);
+  const columnCount = Math.max(1, templateColumns.split(" ").filter(Boolean).length);
   const revealGroups = new Map();
 
   productCards.forEach((card, index) => {
-    const groupIndex = isMobile ? index : Math.floor(index / columnCount);
+    const groupIndex = Math.floor(index / columnCount);
     card.dataset.revealGroup = String(groupIndex);
     card.classList.add("is-pending-reveal");
-    const delayStep = isMobile ? index : groupIndex;
-    card.style.transitionDelay = `${50 + delayStep * 90}ms`;
+    card.style.transitionDelay = `${50 + groupIndex * 90}ms`;
 
     const groupCards = revealGroups.get(groupIndex) || [];
     groupCards.push(card);
@@ -80,9 +76,7 @@ function setupProductRevealAnimation() {
         if (!entry.isIntersecting) return;
 
         const groupIndex = Number(entry.target.dataset.revealGroup);
-        const cardsToReveal = isMobile
-          ? [entry.target]
-          : revealGroups.get(groupIndex) || [entry.target];
+        const cardsToReveal = revealGroups.get(groupIndex) || [entry.target];
 
         cardsToReveal.forEach((card) => {
           revealCard(card);
