@@ -81,6 +81,30 @@ function hideModal(modal) {
   document.body.classList.remove("modal-open");
 }
 
+function setupProductPreview() {
+  const productGrid = document.getElementById("collection");
+  const previewModal = document.getElementById("product-preview-modal");
+  const previewImage = document.getElementById("preview-image");
+  if (!productGrid || !previewModal || !previewImage) return;
+
+  productGrid.addEventListener("click", (event) => {
+    if (event.target.closest(".heart-btn")) return;
+
+    const productCard = event.target.closest(".product");
+    if (!productCard) return;
+
+    const productId = Number(productCard.getAttribute("data-product-id"));
+    const selectedProduct = products.find(
+      (product) => product.id === productId,
+    );
+    if (!selectedProduct) return;
+
+    previewImage.src = selectedProduct.image;
+    previewImage.alt = `Product ${selectedProduct.id}`;
+    showModal(previewModal);
+  });
+}
+
 function modalToggleEvents() {
   document.addEventListener("click", (event) => {
     const trigger = event.target.closest("[data-modal-target]");
@@ -91,15 +115,29 @@ function modalToggleEvents() {
       return;
     }
 
+    const closeButton = event.target.closest("[data-modal-close]");
+    if (closeButton) {
+      const targetModal = closeButton.closest(".modal-overlay");
+      hideModal(targetModal);
+      return;
+    }
+
     if (event.target.classList.contains("modal-overlay")) {
       hideModal(event.target);
     }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const openedModal = document.querySelector(".modal-overlay.show");
+    hideModal(openedModal);
   });
 }
 
 function init() {
   renderProductList();
   scrollToTop();
+  setupProductPreview();
   modalToggleEvents();
 }
 

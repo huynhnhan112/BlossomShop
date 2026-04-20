@@ -41,7 +41,7 @@ const products = [
   },
   {
     id: 9,
-    price: "1000.000đ",
+    price: "1.000.000đ",
     image: "img/pexels-sumcig.jpg",
   },
   {
